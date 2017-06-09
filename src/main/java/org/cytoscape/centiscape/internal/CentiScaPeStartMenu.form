@@ -32,14 +32,14 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPane1" pref="399" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="465" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="1025" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" pref="1058" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -91,7 +91,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel1" pref="559" max="32767" attributes="0"/>
+                      <Component id="jPanel1" pref="616" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel2" min="-2" pref="337" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -130,7 +130,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="EigenVectorCheckBox" pref="165" max="32767" attributes="0"/>
+                                  <Component id="EigenVectorCheckBox" pref="163" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -181,6 +181,7 @@
                                                   <Component id="EigenVectorHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                                   <Component id="BirdgingHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                                   <Component id="EdgeBetweennessHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
+                                                  <Component id="InformationQunatityHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                               </Group>
                                               <Component id="AverageHelpButton" min="-2" max="-2" attributes="2"/>
                                           </Group>
@@ -207,6 +208,10 @@
                                       <Component id="NormCentCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="InformationQunatityCheckBox" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="165" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -275,14 +280,19 @@
                               <Component id="EdgeBetweennessHelpButton" min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="EdgeBetweennessCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="InformationQunatityHelpButton" alignment="0" min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="InformationQunatityCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="selectallButton" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                               <Component id="unselectallButton" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="NormCentCheckBox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -572,6 +582,28 @@
                     <Property name="text" type="java.lang.String" value="Calculate normalized centralities"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JCheckBox" name="InformationQunatityCheckBox">
+                  <Properties>
+                    <Property name="actionCommand" type="java.lang.String" value="Information Qunatity"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="0" left="0" right="0" top="0"/>
+                      </Border>
+                    </Property>
+                    <Property name="label" type="java.lang.String" value="Information Qunatity"/>
+                  </Properties>
+                  <AccessibilityProperties>
+                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Information Qunatity"/>
+                  </AccessibilityProperties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InformationQunatityCheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="InformationQunatityHelpButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="?"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel2">
@@ -612,7 +644,7 @@
                                               <Component id="directedRaidioButton" min="-2" max="-2" attributes="0"/>
                                               <Component id="WeightedCheckBox" min="-2" pref="260" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace pref="42" max="32767" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="DirectedNetworkHelpButton" alignment="1" min="-2" max="-2" attributes="1"/>
                                               <Component id="WeightedNetworkHelpButton" alignment="1" min="-2" max="-2" attributes="1"/>
@@ -954,7 +986,7 @@
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1057,7 +1089,7 @@
                                               <Component id="jLabel4" min="-2" max="-2" attributes="2"/>
                                               <EmptySpace min="1" pref="1" max="1" attributes="0"/>
                                           </Group>
-                                          <Component id="jLabel6" alignment="0" pref="280" max="32767" attributes="3"/>
+                                          <Component id="jLabel6" alignment="0" pref="276" max="32767" attributes="3"/>
                                       </Group>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                   </Group>

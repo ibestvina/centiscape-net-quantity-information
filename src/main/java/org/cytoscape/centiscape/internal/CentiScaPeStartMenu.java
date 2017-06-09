@@ -33,7 +33,7 @@ import org.cytoscape.view.model.CyNetworkView;
 
 public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanelComponent {
 
-    private int numberofcentralities = 12;
+    private int numberofcentralities = 13;
     private boolean calculating = false;
     private CyNetwork lastworkednetwork;
     private CyNetworkView lastworkedview;
@@ -108,6 +108,8 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         EdgeBetweennessCheckBox = new javax.swing.JCheckBox();
         EdgeBetweennessHelpButton = new javax.swing.JButton();
         NormCentCheckBox = new javax.swing.JCheckBox();
+        InformationQunatityCheckBox = new javax.swing.JCheckBox();
+        InformationQunatityHelpButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         StartButton = new javax.swing.JButton();
         StopButton = new javax.swing.JButton();
@@ -362,6 +364,17 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
 
         NormCentCheckBox.setText("Calculate normalized centralities");
 
+        InformationQunatityCheckBox.setActionCommand("Information Qunatity");
+        InformationQunatityCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        InformationQunatityCheckBox.setLabel("Information Qunatity");
+        InformationQunatityCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InformationQunatityCheckBoxActionPerformed(evt);
+            }
+        });
+
+        InformationQunatityHelpButton.setText("?");
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -370,7 +383,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(EigenVectorCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                        .add(EigenVectorCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                         .add(200, 200, 200))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -411,7 +424,8 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                                         .add(org.jdesktop.layout.GroupLayout.LEADING, DegreeHelpButton)
                                         .add(org.jdesktop.layout.GroupLayout.LEADING, EigenVectorHelpButton)
                                         .add(org.jdesktop.layout.GroupLayout.LEADING, BirdgingHelpButton)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, EdgeBetweennessHelpButton))
+                                        .add(org.jdesktop.layout.GroupLayout.LEADING, EdgeBetweennessHelpButton)
+                                        .add(org.jdesktop.layout.GroupLayout.LEADING, InformationQunatityHelpButton))
                                     .add(AverageHelpButton)))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(DiameterCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -428,7 +442,10 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                                 .add(18, 18, 18)
                                 .add(unselectallButton))
                             .add(NormCentCheckBox))
-                        .add(0, 0, Short.MAX_VALUE))))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(InformationQunatityCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(165, 165, 165))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -481,14 +498,20 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(EdgeBetweennessHelpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(EdgeBetweennessCheckBox))
-                .add(23, 23, 23)
+                .add(18, 18, 18)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(InformationQunatityHelpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(InformationQunatityCheckBox))
+                .add(26, 26, 26)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(selectallButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(unselectallButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(NormCentCheckBox)
-                .add(16, 16, 16))
+                .add(30, 30, 30))
         );
+
+        InformationQunatityCheckBox.getAccessibleContext().setAccessibleName("Information Qunatity");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setPreferredSize(new java.awt.Dimension(326, 285));
@@ -653,7 +676,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(directedRaidioButton)
                                     .add(WeightedCheckBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 42, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(org.jdesktop.layout.GroupLayout.TRAILING, DirectedNetworkHelpButton)
                                     .add(org.jdesktop.layout.GroupLayout.TRAILING, WeightedNetworkHelpButton)))
@@ -783,7 +806,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 .add(jLabel3)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel9)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
@@ -815,7 +838,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4Layout.createSequentialGroup()
                                 .add(jLabel4)
                                 .add(1, 1, 1))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
                         .addContainerGap())
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -865,7 +888,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                     .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                     .add(jPanel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387, Short.MAX_VALUE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -874,7 +897,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 .addContainerGap()
                 .add(jLabel2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 337, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -891,12 +914,12 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1025, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     private void LoadAttributesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadAttributesButtonActionPerformed
@@ -1318,6 +1341,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         EigenVectorCheckBox.setSelected(false);
         BridgingCheckBox.setSelected(false);
         EdgeBetweennessCheckBox.setSelected(false);
+        InformationQunatityCheckBox.setSelected(false);
         verifyselection();
         verifynodemultselection();
     }//GEN-LAST:event_unselectallButtonActionPerformed
@@ -1343,6 +1367,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         EigenVectorCheckBox.setSelected(true);
         BridgingCheckBox.setSelected(true);
         EdgeBetweennessCheckBox.setSelected(true);
+        InformationQunatityCheckBox.setSelected(true);
         verifyselection();
         verifynodemultselection();
     }//GEN-LAST:event_selectallButtonMouseClicked
@@ -1557,6 +1582,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                         CheckedCentralities[9] = EigenVectorCheckBox.isSelected();
                         CheckedCentralities[10] = BridgingCheckBox.isSelected();
                         CheckedCentralities[11] = EdgeBetweennessCheckBox.isSelected();
+                        CheckedCentralities[12] = InformationQunatityCheckBox.isSelected();
                         if (undirectedRadioButton.isSelected()) {
                             //undirectedRadioButton.setVisible(false);
                             //undirectedRadioButton.hide();
@@ -1660,6 +1686,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         directedCentralities[9] = "EigenVector Dir";
         directedCentralities[10] = "Bridging Dir";
         directedCentralities[11] = "Edge Betweenness Dir";
+        directedCentralities[12] = "Information Quantity Dir";
         for (int roll = 0; roll < numberofcentralities; roll++) {
             if (CheckedCentralities[roll] == true) {
                 if (currentnetworktable.getColumn(directedCentralities[roll]) != null || isalreadyloaded(directedCentralities[roll])) {
@@ -2101,6 +2128,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                         CheckedCentralities[9] = EigenVectorCheckBox.isSelected();
                         CheckedCentralities[10] = BridgingCheckBox.isSelected();
                         CheckedCentralities[11] = EdgeBetweennessCheckBox.isSelected();
+                        CheckedCentralities[12] = InformationQunatityCheckBox.isSelected();
                         if (undirectedRadioButton.isSelected()) {
                             System.out.println("Enter in undirected networks\n");
 
@@ -2210,6 +2238,10 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         }    
     }//GEN-LAST:event_RoundButtonActionPerformed
 
+    private void InformationQunatityCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InformationQunatityCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_InformationQunatityCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AttributeCombo;
     private javax.swing.JCheckBox AverageDistanceCheckBox;
@@ -2234,6 +2266,8 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     private javax.swing.JCheckBox EigenVectorCheckBox;
     private javax.swing.JButton EigenVectorHelpButton;
     private javax.swing.JButton ExitButton;
+    private javax.swing.JCheckBox InformationQunatityCheckBox;
+    private javax.swing.JButton InformationQunatityHelpButton;
     private javax.swing.JButton LoadAttributesButton;
     private javax.swing.JCheckBox MultipleNetCheckBox;
     private javax.swing.JButton NodeMultButton;
@@ -2395,8 +2429,6 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         if (CheckedCentralities[8] || LoadedCentralities[8]) {
 
             nodeTable.deleteColumn("Centroid unDir");
-
-
             networkTable.deleteColumn("Centroid Max value unDir");
             networkTable.deleteColumn("Centroid min value unDir");
             networkTable.deleteColumn("Centroid mean value unDir");
@@ -2431,6 +2463,16 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 networkTable.deleteColumn("Edge Betweenness Max value unDir");
                 networkTable.deleteColumn("Edge Betweenness min value unDir");
                 networkTable.deleteColumn("Edge Betweenness mean value unDir");
+            }
+
+        }
+        if (CheckedCentralities[12] || LoadedCentralities[12]) {
+
+            if (edgeTable.getColumn("Information Quantity unDir") != null) {
+                edgeTable.deleteColumn("Information Quantity unDir");
+                networkTable.deleteColumn("Information Quantity Max value unDir");
+                networkTable.deleteColumn("Information Quantity min value unDir");
+                networkTable.deleteColumn("Information Quantity mean value unDir");
             }
 
         }
@@ -2494,6 +2536,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         loadedCentralities[9] = isalreadyloaded("EigenVector unDir");
         loadedCentralities[10] = isalreadyloaded("Bridging unDir");
         loadedCentralities[11] = isalreadyloaded("Edge Betweenness unDir");
+        loadedCentralities[12] = isalreadyloaded("Information Quantity unDir");
 
         for (int i = 0; i < numberofcentralities; i++) {
             if (selectedCentralities[i] & loadedCentralities[i]) {
@@ -2535,6 +2578,9 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                         break;
                     case 11:
                         stringcentralities = stringcentralities + "Edge Betwenness, ";
+                        break;
+                    case 12:
+                        stringcentralities = stringcentralities + "Information Quantity, ";
                         break;
                 }
             }
@@ -2590,7 +2636,8 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 || CentroidCheckBox.isSelected()
                 || EigenVectorCheckBox.isSelected()
                 || BridgingCheckBox.isSelected()
-                || EdgeBetweennessCheckBox.isSelected())
+                || EdgeBetweennessCheckBox.isSelected()
+                || InformationQunatityCheckBox.isSelected())
                 &&(MultipleNetCheckBox.isSelected()||SingleNetCheckBox.isSelected())) {
 
             StartButton.setEnabled(true);
@@ -2611,6 +2658,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 || CentroidCheckBox.isSelected()
                 || EigenVectorCheckBox.isSelected()
                 || BridgingCheckBox.isSelected()
+                || EdgeBetweennessCheckBox.isSelected()
                 || EdgeBetweennessCheckBox.isSelected())
                 &&(!(AttributeCombo.getSelectedItem().equals("None")))) {
 

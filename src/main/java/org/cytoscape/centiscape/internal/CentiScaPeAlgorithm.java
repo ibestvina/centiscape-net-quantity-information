@@ -32,6 +32,7 @@ import org.cytoscape.centiscape.internal.Eccentricity.EccentricityMethods;
 import org.cytoscape.centiscape.internal.Eccentricity.FinalResultEccentricity;
 import org.cytoscape.centiscape.internal.EigenVector.CalculateEigenVector;
 import org.cytoscape.centiscape.internal.Radiality.FinalResultRadiality;
+import org.cytoscape.centiscape.internal.InformationQuantity.NodeInformationQuantity;
 import org.cytoscape.centiscape.internal.Stress.FinalResultStress;
 import org.cytoscape.centiscape.internal.visualizer.ImplCentrality;
 import org.cytoscape.model.CyEdge;
@@ -52,6 +53,7 @@ public class CentiScaPeAlgorithm {
     private static Vector CentroidVectorResults;
     private static Vector CentroidVectorofNodes;
     private Vector DegreeVectorResults;
+    private Vector InformationQuantityVectorResults;
     public double[][] adjacencyMatrixOfNetwork;
     public EdgeBetweenness edgeBetweenness;
     private double Diameter = 0;
@@ -72,6 +74,7 @@ public class CentiScaPeAlgorithm {
     private boolean BridgingisOn = false;
     private boolean EdgeBetweennessisOn = false;
     private boolean doNotDisplayBetweenness = false;
+    private boolean InformationQuantityisOn = false;
     public static TreeMap Stressmap = new TreeMap();
     Vector vectorOfNodeAttributes = new Vector();
     Vector vectorOfNetworkAttributes = new Vector();
@@ -200,6 +203,9 @@ public class CentiScaPeAlgorithm {
 
             }
         }
+        if (InformationQuantityisOn) {
+            InformationQuantityVectorResults = new Vector();
+        }
         TreeMap inizializedmap = new TreeMap(Stressmap);
         Diameter = 0;
         // Start iteration on each node
@@ -272,6 +278,9 @@ public class CentiScaPeAlgorithm {
                     currentRadiality.updatesizevector(new Integer(distance));
                 }
                 RadialityVectorResults.add(currentRadiality);
+            }
+            if (InformationQuantityisOn) {
+                InformationQuantityVectorResults.add(new NodeInformationQuantity(root, 123.0));
             }
             if (DiameterisOn || DiameterisSelected) {
 
@@ -718,6 +727,41 @@ public class CentiScaPeAlgorithm {
             VectorResults.add(edgeBetweennessCentrality);
         }
         
+        if (InformationQuantityisOn) {
+            nodeTable.createColumn("Information Quantity unDir", Double.class, false);
+            vectorOfNodeAttributes.addElement("Information Quantity unDir");
+            double min = Double.MAX_VALUE, max = -Double.MAX_VALUE, totalsum = 0, currentvalue;
+            for (Iterator i = InformationQuantityVectorResults.iterator(); i.hasNext();) {
+                NodeInformationQuantity currentnodecloseness = (NodeInformationQuantity) i.next();
+                double currentcloseness = currentnodecloseness.getValue();
+
+
+                if (currentcloseness < min) {
+                    min = currentcloseness;
+                }
+                if (currentcloseness > max) {
+                    max = currentcloseness;
+                }
+                totalsum = totalsum + currentcloseness;
+
+                CyRow row = nodeTable.getRow(currentnodecloseness.getNode().getSUID());
+                row.set("Information Quantity unDir", new Double(currentcloseness));
+            }
+            networkTable.createColumn("Information Quantity Max value unDir", Double.class, false);
+            networkTable.createColumn("Information Quantity min value unDir", Double.class, false);
+            double mean = totalsum / totalnodecount;
+            networkTable.createColumn("Information Quantity mean value unDir", Double.class, false);
+            network.getRow(network).set("Information Quantity Max value unDir", new Double(max));
+            network.getRow(network).set("Information Quantity min value unDir", new Double(min));
+            network.getRow(network).set("Information Quantity mean value unDir", new Double(mean));
+            vectorOfNetworkAttributes.addElement("Information Quantity Max value");
+            vectorOfNetworkAttributes.addElement("Information Quantity min value");
+            vectorOfNetworkAttributes.addElement("Information Quantity mean value");
+            ImplCentrality closenessCentrality = new ImplCentrality("Information Quantity unDir", true, mean, min, max);
+            VectorResults.add(closenessCentrality);
+        }
+
+        
         if (openResultPanel) {
             /// cytoPaneleast.setState(CytoPanelState.DOCK);
         } else {
@@ -746,6 +790,7 @@ public class CentiScaPeAlgorithm {
         EigenVectorisOn = ison[9];
         BridgingisOn = ison[10];
         EdgeBetweennessisOn = ison[11];
+        InformationQuantityisOn = ison[12];
         if(BridgingisOn && BetweennessisOn==false){
             BetweennessisOn = true;
             doNotDisplayBetweenness = true;
