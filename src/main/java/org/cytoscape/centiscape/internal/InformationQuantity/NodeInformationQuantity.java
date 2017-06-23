@@ -145,7 +145,7 @@ public class NodeInformationQuantity {
             double totalEdgeIQ = 0;
             
             for(CyNode other : network.getNodeList()){
-                List<CyNode> otherNeighbours = network.getNeighborList(node,CyEdge.Type.ANY);
+                List<CyNode> otherNeighbours = network.getNeighborList(other,CyEdge.Type.ANY);
                 nbUnionSize = unionSize(neighbours, otherNeighbours);
                 nbDiffSize = 2 * nbUnionSize - (deg + otherNeighbours.size());
                 
