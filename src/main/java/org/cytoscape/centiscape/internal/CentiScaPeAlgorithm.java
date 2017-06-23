@@ -205,6 +205,7 @@ public class CentiScaPeAlgorithm {
         }
         if (InformationQuantityisOn) {
             InformationQuantityVectorResults = new Vector();
+            openResultPanel = true;
         }
         TreeMap inizializedmap = new TreeMap(Stressmap);
         Diameter = 0;
@@ -280,7 +281,9 @@ public class CentiScaPeAlgorithm {
                 RadialityVectorResults.add(currentRadiality);
             }
             if (InformationQuantityisOn) {
-                InformationQuantityVectorResults.add(new NodeInformationQuantity(root, 123.0));
+                NodeInformationQuantity nodeIQ = new NodeInformationQuantity(root, network, false);
+                nodeIQ.execute();
+                InformationQuantityVectorResults.add(nodeIQ);
             }
             if (DiameterisOn || DiameterisSelected) {
 
@@ -730,35 +733,48 @@ public class CentiScaPeAlgorithm {
         if (InformationQuantityisOn) {
             nodeTable.createColumn("Information Quantity unDir", Double.class, false);
             vectorOfNodeAttributes.addElement("Information Quantity unDir");
-            double min = Double.MAX_VALUE, max = -Double.MAX_VALUE, totalsum = 0, currentvalue;
+            double min = Double.MAX_VALUE, max = -Double.MAX_VALUE, totalsum = 0, totalNodeIQ = 0, totalEdgeIQ = 0, currentvalue;
             for (Iterator i = InformationQuantityVectorResults.iterator(); i.hasNext();) {
-                NodeInformationQuantity currentnodecloseness = (NodeInformationQuantity) i.next();
-                double currentcloseness = currentnodecloseness.getValue();
+                NodeInformationQuantity currentnodeIQ = (NodeInformationQuantity) i.next();
+                double currentIQ = currentnodeIQ.getTotalIQ();
 
 
-                if (currentcloseness < min) {
-                    min = currentcloseness;
+                if (currentIQ < min) {
+                    min = currentIQ;
                 }
-                if (currentcloseness > max) {
-                    max = currentcloseness;
+                if (currentIQ > max) {
+                    max = currentIQ;
                 }
-                totalsum = totalsum + currentcloseness;
+                totalsum = totalsum + currentIQ;
+                totalNodeIQ += currentnodeIQ.getNodeIQ();
+                totalEdgeIQ += currentnodeIQ.getEdgeIQ();
 
-                CyRow row = nodeTable.getRow(currentnodecloseness.getNode().getSUID());
-                row.set("Information Quantity unDir", new Double(currentcloseness));
+                CyRow row = nodeTable.getRow(currentnodeIQ.getNode().getSUID());
+                row.set("Information Quantity unDir", new Double(currentIQ));
             }
             networkTable.createColumn("Information Quantity Max value unDir", Double.class, false);
             networkTable.createColumn("Information Quantity min value unDir", Double.class, false);
+            
             double mean = totalsum / totalnodecount;
+            double nodeMean = totalNodeIQ / totalnodecount;
+            double edgeMean = totalEdgeIQ / totalnodecount;
             networkTable.createColumn("Information Quantity mean value unDir", Double.class, false);
+
+            networkTable.createColumn("Network Node Information Quantity", Double.class, false);
+            networkTable.createColumn("Network Edge Information Quantity", Double.class, false);
+            
             network.getRow(network).set("Information Quantity Max value unDir", new Double(max));
             network.getRow(network).set("Information Quantity min value unDir", new Double(min));
             network.getRow(network).set("Information Quantity mean value unDir", new Double(mean));
+            
+            network.getRow(network).set("Network Node Information Quantity", new Double(nodeMean));
+            network.getRow(network).set("Network Edge Information Quantity", new Double(edgeMean));
+
             vectorOfNetworkAttributes.addElement("Information Quantity Max value");
             vectorOfNetworkAttributes.addElement("Information Quantity min value");
             vectorOfNetworkAttributes.addElement("Information Quantity mean value");
-            ImplCentrality closenessCentrality = new ImplCentrality("Information Quantity unDir", true, mean, min, max);
-            VectorResults.add(closenessCentrality);
+            ImplCentrality centralityIQ = new ImplCentrality("Information Quantity unDir", true, mean, min, max);
+            VectorResults.add(centralityIQ);
         }
 
         

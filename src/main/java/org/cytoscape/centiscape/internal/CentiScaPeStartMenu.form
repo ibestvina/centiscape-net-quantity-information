@@ -181,7 +181,7 @@
                                                   <Component id="EigenVectorHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                                   <Component id="BirdgingHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                                   <Component id="EdgeBetweennessHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
-                                                  <Component id="InformationQunatityHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
+                                                  <Component id="InformationQuantityHelpButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                               </Group>
                                               <Component id="AverageHelpButton" min="-2" max="-2" attributes="2"/>
                                           </Group>
@@ -210,7 +210,7 @@
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="InformationQunatityCheckBox" max="32767" attributes="0"/>
+                                  <Component id="InformationQuantityCheckBox" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="165" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -282,8 +282,8 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="InformationQunatityHelpButton" alignment="0" min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="InformationQunatityCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="InformationQuantityHelpButton" alignment="0" min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="InformationQuantityCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -582,24 +582,21 @@
                     <Property name="text" type="java.lang.String" value="Calculate normalized centralities"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="InformationQunatityCheckBox">
+                <Component class="javax.swing.JCheckBox" name="InformationQuantityCheckBox">
                   <Properties>
-                    <Property name="actionCommand" type="java.lang.String" value="Information Qunatity"/>
+                    <Property name="actionCommand" type="java.lang.String" value="Information Quantity"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                         <EmptyBorder bottom="0" left="0" right="0" top="0"/>
                       </Border>
                     </Property>
-                    <Property name="label" type="java.lang.String" value="Information Qunatity"/>
+                    <Property name="label" type="java.lang.String" value="Information Quantity"/>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Information Qunatity"/>
-                  </AccessibilityProperties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InformationQunatityCheckBoxActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InformationQuantityCheckBoxActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="InformationQunatityHelpButton">
+                <Component class="javax.swing.JButton" name="InformationQuantityHelpButton">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="?"/>
                   </Properties>

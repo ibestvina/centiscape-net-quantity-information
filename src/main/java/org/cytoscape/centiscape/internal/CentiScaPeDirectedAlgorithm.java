@@ -22,6 +22,7 @@ import org.cytoscape.centiscape.internal.Eccentricity.DirectedEccentricity;
 import org.cytoscape.centiscape.internal.EigenVector.CalculateEigenVector;
 import org.cytoscape.centiscape.internal.Radiality.DirectedRadiality;
 import org.cytoscape.centiscape.internal.visualizer.ImplCentrality;
+import org.cytoscape.centiscape.internal.InformationQuantity.NodeInformationQuantity;
 import org.cytoscape.model.CyEdge;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
@@ -57,6 +58,7 @@ public class CentiScaPeDirectedAlgorithm {
     private static Vector BetweennessVectorResults;
     private static Vector CentroidVectorResults;
     private static Vector CentroidVectorofNodes;
+    private Vector InformationQuantityVectorResults;
     public double[][] adjacencyMatrixOfNetwork;
     public CentiScaPeCore centiscapecore;
     public Vector vectorResults = new Vector();
@@ -147,6 +149,9 @@ public class CentiScaPeDirectedAlgorithm {
         if(checkedCentralities[11]){
             edgeBetweenness = new EdgeBetweenness(network);
         }
+        if(checkedCentralities[12]){
+            InformationQuantityVectorResults = new Vector();
+        }
         //       
             /*CheckedCentralities[0] = DiameterCheckBox.isSelected();
             CheckedCentralities[1] = AverageDistanceCheckBox.isSelected();
@@ -214,6 +219,11 @@ public class CentiScaPeDirectedAlgorithm {
                 }
                 if (checkedCentralities[11]){
                     edgeBetweenness.updateEdgeBetweenness(CentiScaPeMultiShortestPathVector);
+                }
+                if (checkedCentralities[12]){
+                    NodeInformationQuantity nodeIQ = new NodeInformationQuantity(root, network, true);
+                    nodeIQ.execute();
+                    InformationQuantityVectorResults.add(nodeIQ);
                 }
                 singleShortestPaths.put(root, CentiScaPeSingleShortestPathVector);
         }   
@@ -463,6 +473,50 @@ public class CentiScaPeDirectedAlgorithm {
             ImplCentrality edgeBetweennessCentrality = new ImplCentrality(directedCentralities[11], true, mean, min, max);
             vectorResults.add(edgeBetweennessCentrality);
         }
+        if (checkedCentralities[12]) {
+            nodeTable.createColumn(directedCentralities[12], Double.class, false);
+            //vectorOfNodeAttributes.addElement("CentiScaPe Centroid");
+            double min = Double.MAX_VALUE, max = -Double.MAX_VALUE, totalsum = 0,totalNodeIQ = 0, totalEdgeIQ = 0, currentvalue;
+            for (Iterator i = InformationQuantityVectorResults.iterator(); i.hasNext();) {
+
+                NodeInformationQuantity currentnodeIQ = (NodeInformationQuantity) i.next();
+                double currentIQ = currentnodeIQ.getTotalIQ();
+
+                if (currentIQ < min) {
+                    min = currentIQ;
+                }
+                if (currentIQ > max) {
+                    max = currentIQ;
+                }
+                totalsum = totalsum + currentIQ;
+                totalNodeIQ += currentnodeIQ.getNodeIQ();
+                totalEdgeIQ += currentnodeIQ.getEdgeIQ();
+                
+                CyRow row = nodeTable.getRow(currentnodeIQ.getNode().getSUID());
+                row.set(directedCentralities[12], new Double(currentIQ));
+            }
+            networkTable.createColumn(directedCentralities[12].split(" ")[0]+" Max value Dir", Double.class, false);
+            networkTable.createColumn(directedCentralities[12].split(" ")[0]+" min value Dir", Double.class, false);
+            double mean = totalsum / totalnodecount;
+            double nodeMean = totalNodeIQ / totalnodecount;
+            double edgeMean = totalEdgeIQ / totalnodecount;
+            networkTable.createColumn(directedCentralities[12].split(" ")[0]+" mean value Dir", Double.class, false);
+            networkTable.createColumn("Network Node Information Quantity", Double.class, false);
+            networkTable.createColumn("Network Edge Information Quantity", Double.class, false);
+            
+            network.getRow(network).set(directedCentralities[12].split(" ")[0]+" Max value Dir", new Double(max));
+            network.getRow(network).set(directedCentralities[12].split(" ")[0]+" min value Dir", new Double(min));
+            network.getRow(network).set(directedCentralities[12].split(" ")[0]+" mean value Dir", new Double(mean));
+            
+            network.getRow(network).set("Network Node Information Quantity", new Double(nodeMean));
+            network.getRow(network).set("Network Edge Information Quantity", new Double(edgeMean));
+      
+            ImplCentrality centralityIQ = new ImplCentrality(directedCentralities[12], true, mean, min, max);
+            vectorResults.add(centralityIQ);
+        }
+        
+        
+        
         return vectorResults;
     }
     
