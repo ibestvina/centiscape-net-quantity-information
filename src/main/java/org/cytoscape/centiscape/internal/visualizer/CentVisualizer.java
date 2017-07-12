@@ -127,48 +127,53 @@ public class CentVisualizer extends javax.swing.JPanel implements Observer, Cyto
         catch (InvocationTargetException e){
             
         }*/
-        ArrayList<CyNode> selYes = new ArrayList();
-        ArrayList<CyNode> selNo = new ArrayList();
+       
+        //ArrayList<CyNode> selYes = new ArrayList();
+        //ArrayList<CyNode> selNo = new ArrayList();
+
+
     //    for (Iterator it = Cytoscape.getCurrentNetwork().nodesIterator(); it.hasNext();) {
        for (Iterator it = currentnetwork.getNodeList().listIterator(); it.hasNext();) {
         CyNode elem = (CyNode) it.next();
 
             if (isASelectedNode(elem)) {
-                selYes.add(elem);
+                //selYes.add(elem);
                 //System.out.println("setto a vero il nodo " + elem.getSUID());
                 nodecytable.getRow(elem.getSUID()).set("selected", true);
           //  Cytoscape.getCurrentNetwork().setSelectedNodeState(elem, true);
             } else {
-                selNo.add(elem);
+                //selNo.add(elem);
                   //System.out.println("setto a falso il nodo " + elem.getSUID());
                   nodecytable.getRow(elem.getSUID()).set("selected", false);
          //   Cytoscape.getCurrentNetwork().setSelectedNodeState(elem, false);
             }
             
-            currentview.updateView();
+            //currentview.updateView();
         }
+
        // update the network selection by using threasold value
        CyTable edgecytable = currentnetwork.getDefaultEdgeTable();
-        ArrayList<CyEdge> selEdgeYes = new ArrayList();
-        ArrayList<CyEdge> selEdgeNo = new ArrayList();
+        //ArrayList<CyEdge> selEdgeYes = new ArrayList();
+        //ArrayList<CyEdge> selEdgeNo = new ArrayList();
     for (Iterator edgeit = currentnetwork.getEdgeList().listIterator(); edgeit.hasNext();) {
         CyEdge edge = (CyEdge) edgeit.next();
 
             if (isASelectedEdge(edge)) {
-                selEdgeYes.add(edge);
+                //selEdgeYes.add(edge);
                 //System.out.println("setting selected trur for edge " + edge.getSUID());
                 edgecytable.getRow(edge.getSUID()).set("selected", true);
                
           
             } else {
-                selEdgeNo.add(edge);
+                //selEdgeNo.add(edge);
                   //System.out.println("setto a falso il nodo " + elem.getSUID());
                 //System.out.println("setting selected false for edge " + edge.getSUID());
                   edgecytable.getRow(edge.getSUID()).set("selected", false);
          
             }
-            currentview.updateView();
+            //currentview.updateView();
         }
+        currentview.updateView();
        
        /////RISISTEMARE
      //   Cytoscape.getCurrentNetwork().setSelectedNodeState(selYes, true);
