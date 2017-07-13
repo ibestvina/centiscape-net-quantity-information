@@ -2172,7 +2172,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                                 ThrEng.run();
                                 VectorResults = ThrEng.getCentralities();
                                 nodemult.calculateCentralities(VectorResults);
-                                nodemult.deleteNetwork();
+                                //nodemult.deleteNetwork();
                                 this.setEnabled(true);
                             }
                         } else {

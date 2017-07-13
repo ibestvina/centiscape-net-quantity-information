@@ -172,8 +172,8 @@ public class CentiScaPeNodeMultiply {
             }       
         }   
         networkchild.removeNodes(nodesremove);
-        networkchildview = networkviewfactory.createNetworkView(networkchild);
-        networkviewmanager.addNetworkView(networkchildview);
+        //networkchildview = networkviewfactory.createNetworkView(networkchild);
+        //networkviewmanager.addNetworkView(networkchildview);
         return answer;    
     }
     
