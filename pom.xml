@@ -166,6 +166,11 @@
 	  <artifactId>beansbinding</artifactId>
 	  <version>1.2.1</version>
 	 </dependency>
+	 <dependency>
+	  <groupId>org.jfree.chart</groupId>
+	  <artifactId>jfreechart-fse</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+	 </dependency>
 	</dependencies>
         
          

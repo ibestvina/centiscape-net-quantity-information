@@ -353,7 +353,11 @@ public class CentVisualOptions extends javax.swing.JPanel  {
     private void plotByCentralityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotByCentralityActionPerformed
         // TODO add your handling code here:
       //  CentScatterPlot scatter=new CentScatterPlot((Centrality)xCombo.getSelectedItem(),(String)yCombo.getSelectedItem());
-       CentScatterPlot scatter=new CentScatterPlot((String)xCombo.getSelectedItem(),(String)yCombo.getSelectedItem(),currentnetwork, currentview);
+      
+      String xComboSelected = (String)xCombo.getSelectedItem();
+      String yComboSelected = (String)yCombo.getSelectedItem();
+      CentScatterPlot scatter;
+      scatter = new CentScatterPlot(xComboSelected, yComboSelected, currentnetwork, currentview);
       
         
         scatter.setSize(700,600);

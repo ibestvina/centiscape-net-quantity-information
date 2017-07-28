@@ -223,13 +223,13 @@ public class CentScatterPlot extends JFrame
             XYSeries series = new XYSeries (node.getSUID());
 
             if      (currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(x) != null) {  
-                vx = (Double)currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(x);
+                vx = Double.valueOf(currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(x).toString());
                 
                 val[0][0] = vx;
             }
 
             if      (currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(y) != null) {  
-                vy = (Double)currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(y);
+                vy = Double.valueOf(currentnetwork.getDefaultNodeTable().getRow(node.getSUID()).getRaw(y).toString());
                 val[1][0] = vy;
             }
             series.add(val[0][0], val[1][0]);
