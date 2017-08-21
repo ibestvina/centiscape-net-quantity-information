@@ -11,17 +11,24 @@ package org.cytoscape.centiscape.internal;
  */
 import java.awt.Component;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.swing.CySwingApplication;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
+import org.cytoscape.centiscape.internal.StatisticalFunctions.DistanceMatrix;
 import org.cytoscape.centiscape.internal.visualizer.Centrality;
 import org.cytoscape.centiscape.internal.visualizer.ImplCentrality;
 import org.cytoscape.model.CyColumn;
@@ -57,6 +64,13 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     static String edgeWeightAttribute;
     static Class<?> attrtype;
     
+    private String directory;
+    private List<CyNetwork> realnet = new ArrayList();
+    private List<CyNetwork> randomnet = new ArrayList();
+    private List<String> tmp, centrfinal, attributeslist;
+    private StatisticalFunctions stat;
+
+    
     public CentiScaPeStartMenu(CyActivator cyactivator, CentiScaPeCore centiscapecore) {
         initComponents();
         startclient.setVisible(false);
@@ -66,6 +80,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         lastworkedview = null;
         cyApplicationManager = centiscapecore.getCyApplicationManager();
         cyDesktopService = centiscapecore.getCyDesktopService();
+        stat = new StatisticalFunctions(this.centiscapecore);
         loadAttributeList();
     }
 
@@ -78,6 +93,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        pathFile = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -144,6 +160,19 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        realLabel5 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        StartStat5 = new javax.swing.JButton();
+        realButton5 = new javax.swing.JButton();
+        StatHelp5 = new javax.swing.JButton();
+        folderName5 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        attributeList5 = new javax.swing.JList<>();
+        ListLabel5 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        randomButton5 = new javax.swing.JButton();
+        randomLabel5 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setPreferredSize(new java.awt.Dimension(374, 1062));
@@ -153,7 +182,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         jScrollPane1.setPreferredSize(new java.awt.Dimension(374, 1200));
 
         jPanel5.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanel5.setPreferredSize(new java.awt.Dimension(374, 1062));
+        jPanel5.setPreferredSize(new java.awt.Dimension(750, 1700));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Implemented centralities"));
         jPanel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -752,7 +781,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                         .add(RoundButton)))
                 .add(5, 5, 5)
                 .add(startclient)
-                .addContainerGap())
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -873,12 +902,132 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
             .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 102, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Statistical Analysis"));
+
+        realLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        realLabel5.setForeground(new java.awt.Color(255, 0, 0));
+
+        jLabel26.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel26.setText("Real data networks");
+
+        StartStat5.setText("START STATISTICS");
+        StartStat5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartStat5ActionPerformed(evt);
+            }
+        });
+
+        realButton5.setText("Selected");
+        realButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                realButton5ActionPerformed(evt);
+            }
+        });
+
+        StatHelp5.setText("?");
+        StatHelp5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StatHelp5ActionPerformed(evt);
+            }
+        });
+
+        folderName5.setText("Save as");
+        folderName5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                folderName5ActionPerformed(evt);
+            }
+        });
+
+        attributeList5.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Select networks before" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane7.setViewportView(attributeList5);
+
+        ListLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        ListLabel5.setText("Select the attribute(s) to compare:");
+
+        jLabel27.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel27.setText("Random networks");
+
+        randomButton5.setText("Selected");
+        randomButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomButton5ActionPerformed(evt);
+            }
+        });
+
+        randomLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        randomLabel5.setForeground(new java.awt.Color(255, 0, 0));
+
+        org.jdesktop.layout.GroupLayout jPanel7Layout = new org.jdesktop.layout.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel7Layout.createSequentialGroup()
+                        .add(folderName5)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(StartStat5))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(StatHelp5))
+                    .add(jScrollPane7)
+                    .add(jPanel7Layout.createSequentialGroup()
+                        .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel7Layout.createSequentialGroup()
+                                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(jPanel7Layout.createSequentialGroup()
+                                        .add(jLabel27, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 104, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(randomButton5))
+                                    .add(jPanel7Layout.createSequentialGroup()
+                                        .add(jLabel26)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(realButton5)))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(randomLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(realLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                            .add(ListLabel5))
+                        .add(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel7Layout.createSequentialGroup()
+                .add(StatHelp5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jLabel26)
+                        .add(realButton5))
+                    .add(realLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(randomLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jLabel27)
+                        .add(randomButton5)))
+                .add(18, 18, 18)
+                .add(ListLabel5)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(folderName5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(StartStat5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+        );
+
         org.jdesktop.layout.GroupLayout jPanel5Layout = new org.jdesktop.layout.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
+                .add(16, 16, 16)
                 .add(jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(jPanel5Layout.createSequentialGroup()
                         .add(12, 12, 12)
@@ -886,7 +1035,8 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                     .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                     .add(jPanel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387, Short.MAX_VALUE)
+                    .add(jPanel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -895,14 +1045,16 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
                 .addContainerGap()
                 .add(jLabel2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 616, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 337, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 360, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 116, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 124, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel5);
@@ -912,12 +1064,14 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                .add(0, 67, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
+                .add(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void LoadAttributesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadAttributesButtonActionPerformed
@@ -2240,6 +2394,156 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
         // TODO add your handling code here:
     }//GEN-LAST:event_InformationQuantityCheckBoxActionPerformed
 
+    private void randomButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomButton5ActionPerformed
+        // TODO add your handling code here:
+        this.randomnet = centiscapecore.cyApplicationManager.getSelectedNetworks();
+        ListLabel5.setEnabled(true);
+        attributeList5.setEnabled(true);
+        int netsn = realnet.size()+randomnet.size();
+        tmp = stat.getColumnNames(realnet, randomnet);
+        centrfinal = stat.compareWhat(tmp, netsn);
+        if(!centrfinal.isEmpty()){
+            DefaultListModel lm = new DefaultListModel();
+            for(String s : centrfinal){ lm.addElement(s);}
+            attributeList5.setModel(lm);
+            System.out.println("got randoms "+randomnet.toString());
+            randomButton5.setEnabled(false);
+            randomLabel5.setText("Random network(s) selected");
+            folderName5.setEnabled(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(this.cyDesktopService.getJFrame(),"No centrality shared along the selected networks, check the attributes or select again", "Randomizer", JOptionPane.WARNING_MESSAGE);
+            realButton5.setEnabled(true);
+            randomButton5.setEnabled(false);
+            attributeList5.setEnabled(false);
+            ListLabel5.setEnabled(false);
+            realLabel5.setText("Select real network(s)");
+            randomLabel5.setText("Select random network(s)");
+        }
+    }//GEN-LAST:event_randomButton5ActionPerformed
+
+    private void folderName5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folderName5ActionPerformed
+        // TODO add your handling code here:
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                //pathFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                pathFile.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                pathFile.showSaveDialog(null);
+                directory = pathFile.getSelectedFile().toString();
+            }
+        });
+    }//GEN-LAST:event_folderName5ActionPerformed
+
+    private void StatHelp5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatHelp5ActionPerformed
+        // TODO add your handling code here:
+        showInfo("Statistics","Select two sets of networks, one which are real-data networks and another one which represents the randomised networks. Then press Start.");
+    }//GEN-LAST:event_StatHelp5ActionPerformed
+
+    private void realButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realButton5ActionPerformed
+        // TODO add your handling code here:
+        this.realnet = centiscapecore.cyApplicationManager.getSelectedNetworks();
+        randomButton5.setEnabled(true);
+        System.out.println("got reals "+realnet.toString());
+        realButton5.setEnabled(false);
+        realLabel5.setText("Real network(s) selected");
+    }//GEN-LAST:event_realButton5ActionPerformed
+
+    private void StartStat5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartStat5ActionPerformed
+        // TODO add your handling code here:
+        /*if (fileName.getText().equals("")){
+            showWarning("File name unspecified!", "Statistical Analysis");
+            return;
+        }*/
+        attributeslist = attributeList5.getSelectedValuesList();
+        if(!this.realnet.isEmpty()){
+            if(!this.randomnet.isEmpty()){
+                //check wether a network is in both sets, which is wrong!
+                boolean flag = false;
+                for(int i=0; i<realnet.size(); i++){
+                    if(randomnet.contains(realnet.get(i))){
+                        flag = true;
+                    }
+                }
+                if(flag==false){//then run the statistics
+                    //now we should show the centrfinal elements to the user so then s/he could select the one to compare!
+                    ArrayList<ArrayList<Double>> horizontal = new ArrayList<>();
+                    ArrayList<ArrayList<Double>> vertical = new ArrayList<>();
+                    //vertical are real networks, horizontal are random networks
+                    List<String> verticalnames = new ArrayList();
+                    List<String> horizontalnames = new ArrayList();
+                    DistanceMatrix tmpmat;
+                    List<DistanceMatrix> distmatlist = new ArrayList();
+                    String filename = directory;//+"/"+fileName.getText();
+                    System.out.println("filename "+filename);
+                    if(realnet.size()==1){//if there is only a real network
+                        for(String cen : attributeslist){
+                            vertical = stat.getCentrality(cen, realnet);
+                            horizontal = stat.getCentrality(cen, randomnet);
+                            tmpmat = stat.getDistanceMatrix(vertical, horizontal);
+                            distmatlist.add(tmpmat);
+                        }
+                        if(randomnet.size()!=1){
+                            for(CyNetwork net : randomnet){
+                                horizontalnames.add(net.toString());
+                            }
+                        }
+                        else{
+                            horizontalnames.add(randomnet.get(0).toString());
+                        }
+                        stat.singleRealGenerateOutput(filename, realnet.get(0).toString(), horizontalnames, attributeslist, distmatlist);
+                    }
+                    else{//otherwise, we have more reals
+                        for(String cen : attributeslist){
+                            vertical = stat.getCentrality(cen, realnet);
+                            horizontal = stat.getCentrality(cen, randomnet);
+                            tmpmat = stat.getDistanceMatrix(vertical, horizontal);
+                            distmatlist.add(tmpmat);
+                        }
+                        if(randomnet.size()!=1){
+                            for(CyNetwork net : randomnet){
+                                horizontalnames.add(net.toString());
+                            }
+                        }
+                        for(CyNetwork net : realnet){
+                            verticalnames.add(net.toString());
+                        }
+                        if(attributeslist.size()>=1){
+                            stat.multipleRealGenerateOutput(filename, verticalnames, horizontalnames, attributeslist, distmatlist);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(this.cyDesktopService.getJFrame(),"Select at least a centrality to compare", "Randomizer", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(this.cyDesktopService.getJFrame(),"A network is in both sets! choose again", "Randomizer", JOptionPane.WARNING_MESSAGE);
+                    attributeList5.setEnabled(false);
+                    realButton5.setEnabled(true);
+                    realLabel5.setText("select real network(s)");
+                    randomLabel5.setText("select random network(s)");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this.cyDesktopService.getJFrame(),"Random networks not selected", "Randomizer", JOptionPane.WARNING_MESSAGE);
+                attributeList5.setEnabled(false);
+                randomButton5.setEnabled(true);
+                randomLabel5.setText("Select random network(s)");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this.cyDesktopService.getJFrame(),"Real networks not selected", "Randomizer", JOptionPane.WARNING_MESSAGE);
+            attributeList5.setEnabled(false);
+            randomButton5.setEnabled(true);
+            realLabel5.setText("Select real network(s)");
+        }
+        attributeList5.clearSelection();
+        attributeList5.setEnabled(false);
+        folderName5.setEnabled(false);
+        realButton5.setEnabled(true);
+        randomButton5.setEnabled(false);
+    }//GEN-LAST:event_StartStat5ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AttributeCombo;
     private javax.swing.JCheckBox AverageDistanceCheckBox;
@@ -2266,6 +2570,7 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     private javax.swing.JButton ExitButton;
     private javax.swing.JCheckBox InformationQuantityCheckBox;
     private javax.swing.JButton InformationQuantityHelpButton;
+    private javax.swing.JLabel ListLabel5;
     private javax.swing.JButton LoadAttributesButton;
     private javax.swing.JCheckBox MultipleNetCheckBox;
     private javax.swing.JButton NodeMultButton;
@@ -2276,17 +2581,23 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     private javax.swing.JTextField RoundField;
     private javax.swing.JCheckBox SingleNetCheckBox;
     private javax.swing.JButton StartButton;
+    private javax.swing.JButton StartStat5;
+    private javax.swing.JButton StatHelp5;
     private javax.swing.JButton StopButton;
     private javax.swing.JCheckBox StressCheckBox;
     private javax.swing.JButton StressHelpButton;
     private javax.swing.JButton UndirectedNetworkHelpButton;
     private javax.swing.JCheckBox WeightedCheckBox;
     private javax.swing.JButton WeightedNetworkHelpButton;
+    private javax.swing.JList<String> attributeList5;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton directedRaidioButton;
+    private javax.swing.JButton folderName5;
     private static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2301,9 +2612,16 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JFileChooser pathFile;
+    private javax.swing.JButton randomButton5;
+    private javax.swing.JLabel randomLabel5;
+    private javax.swing.JButton realButton5;
+    private javax.swing.JLabel realLabel5;
     private javax.swing.JButton selectallButton;
     private javax.swing.JButton startclient;
     private javax.swing.JRadioButton undirectedRadioButton;
@@ -2693,5 +3011,12 @@ public class CentiScaPeStartMenu extends javax.swing.JPanel implements CytoPanel
 
     public void jTextPanelsetText(String set) {
         jLabelServerResponse.setText(set);
+    }
+    
+    
+    private void showInfo(String title, String info){
+        JTextArea ta = new JTextArea(info,20,90);
+        ta.setLineWrap(true);
+        JOptionPane.showMessageDialog(this, new JScrollPane(ta), title, JOptionPane.PLAIN_MESSAGE);
     }
 }
